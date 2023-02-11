@@ -167,3 +167,112 @@ Licenses for borrowed code can be found in `Settings -> Licenses` screen, and al
 - TAESD - Ollin Boer Bohan - https://github.com/madebyollin/taesd
 - Initial Gradio script - posted on 4chan by an Anonymous user. Thank you Anonymous user.
 - (You)
+
+# my running notes:
+`git clone https://github.com/racinmat/stable-diffusion-webui.git`
+`git pull --recurse-submodules`
+modify the `webui-user.bat`, point to the correct python
+set the python, it can be the base one, it will use it to run the scripts which make and run the env var
+run the `webui-user.bat`, it will start installing and preparing everything, usually it takes ~25 mins for the first time, in case it was trying to install from pip using company artifactory and then it timeouted, so it shoul be a bit less, but most of the time was installing gfpgan, clip, open_clip etc.
+
+I ran into issue:
+```
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+```
+I followed:
+https://levelup.gitconnected.com/how-to-deal-with-the-remote-host-identification-has-changed-message-with-github-1dea015dae8d
+in ~/.ssh/known_hosts I removed github.com row and then into some unrelated temp directory I closed some repo using ssh 
+(not https) link, then I confirmed adding github.com to known hosts and issue was resolved
+
+after starting the `webui-user.bat` I got
+```
+AssertionError: Torch is not able to use GPU; add --skip-torch-cuda-test to COMMANDLINE_ARGS variable to disable this check
+```
+according to https://stackoverflow.com/questions/60987997/why-torch-cuda-is-available-returns-false-even-after-installing-pytorch-with
+I need to check versions of compute capability, cuda etc.
+
+to activate the venv for local usage in cli, I ran `.\venv\Scripts\activate.bat`
+running `pip freeze` showed `torch==1.13.1+cu117`.
+The GPU should support it.
+Checking driver version:
+Device manager showed I have 31.0.15.2849
+Nvidia control panel showed version 528.49
+https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html shows it should be supported
+
+during the first-time setup I got
+```bah
+INCOMPATIBLE PYTHON VERSION
+
+This program is tested with 3.10.6 Python, but you have 3.9.7.
+If you encounter an error with "RuntimeError: Couldn't install torch." message,
+or any other error regarding unsuccessful package (library) installation,
+please downgrade (or upgrade) to the latest version of 3.10 Python
+and delete current Python and "venv" folder in WebUI's directory.
+```
+so I need to run same python version as a base.
+Installation started in 11:07, finished 11:33
+
+config notes:
+I have ui-config-ntb for my laptop, most should be same as ui-config.json, but
+has lower steps num and batch size to be practical for just trying it out, although
+with ugly images
+
+
+### web server for showing generated images:
+https://stackoverflow.com/questions/5050851/best-lightweight-web-server-only-static-content-for-windows
+easiest, multi-platform and fully working seems to be just running python http server:
+```bash
+cd <sd base>/outputs/txt2img-images
+python -m http.server 8081
+```
+with redirect of stdout to some log file
+e.g.
+```bash
+cd <sd base>/outputs/txt2img-images
+python -m http.server 8081 > img_access.log 2>&1
+```
+
+gradio seems to serve all local images from the working directory, e.g.:
+http://localhost:7860/file=C:/Projects/others/stable-diffusion-webui/outputs/txt2img-images/2023-04-30/00008-2994637937.png
+is for showing the image. 
+I don't want to have this open to public internet, could be used to see configs.
+It can show other file types, e.g. http://localhost:7860/file=C:/Projects/others/stable-diffusion-webui/ui-config.json,
+so we want to keep this only on the local server, and make public only something other
+
+I use https://pypi.org/project/qrcode/ to generate images. Pillow is already installed as dependency, so no need to
+install it as qrcode[pil].
+
+On target pc:
+copy these 3 bat files to desktop:
+change the path in cd there to absolute one.
+change the path to firefox or other browser to correct one
+
+checklist at place:
+- install python & git
+- clone
+- copy models
+- edit bat files
+- run everything from bat files
+- generate anything
+- verify QR code
+- check QR code link over wifi and data from phone
+  - if not working, check firewall settings
+
+if you create file `user.css` in root and place css there, it's loaded.
+
+the ui can't do txt2img batch processing, but here is some custom script:
+https://github.com/AUTOMATIC1111/stable-diffusion-webui/discussions/7852
+https://github.com/Z-nonymous/sd_webui_batchscripts.git
+
+to add the extensions: just add these urls it in the UI:
+- https://github.com/racinmat/DiffusionDefender.git
+- https://github.com/Z-nonymous/sd_webui_batchscripts.git
+
+to use the batchscript, go to txt2img tab, script, and there select the script.
+
+branches:
+old master contains many commits and their reverts caused by migrating the code logic to the extension.
+master contains just relevant commits with the changes
