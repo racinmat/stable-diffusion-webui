@@ -305,11 +305,11 @@ def create_toprow(is_img2img):
                 )
 
             with gr.Row(elem_id=f"{id_part}_tools"):
-                paste = ToolButton(value=paste_symbol, elem_id="paste", label='Paste prompt')
-                clear_prompt_button = ToolButton(value=clear_prompt_symbol, elem_id=f"{id_part}_clear_prompt", label='Clear prompt')
-                extra_networks_button = ToolButton(value=extra_networks_symbol, elem_id=f"{id_part}_extra_networks", label = 'Extra networks')
-                prompt_style_apply = ToolButton(value=apply_style_symbol, elem_id=f"{id_part}_style_apply", label='Style apply')
-                save_style = ToolButton(value=save_style_symbol, elem_id=f"{id_part}_style_create", label='Style create')
+                paste = ToolButton(value=paste_symbol, elem_id="paste")
+                clear_prompt_button = ToolButton(value=clear_prompt_symbol, elem_id=f"{id_part}_clear_prompt")
+                extra_networks_button = ToolButton(value=extra_networks_symbol, elem_id=f"{id_part}_extra_networks")
+                prompt_style_apply = ToolButton(value=apply_style_symbol, elem_id=f"{id_part}_style_apply")
+                save_style = ToolButton(value=save_style_symbol, elem_id=f"{id_part}_style_create")
                 restore_progress_button = ToolButton(value=restore_progress_symbol, elem_id=f"{id_part}_restore_progress", visible=False)
 
                 token_counter = gr.HTML(value="<span>0/75</span>", elem_id=f"{id_part}_token_counter", elem_classes=["token-counter"])
@@ -378,7 +378,7 @@ def create_refresh_button(refresh_component, refresh_method, refreshed_args, ele
 
         return gr.update(**(args or {}))
 
-    refresh_button = ToolButton(value=refresh_symbol, elem_id=elem_id, label=elem_id+'_label')
+    refresh_button = ToolButton(value=refresh_symbol, elem_id=elem_id)
     refresh_button.click(
         fn=refresh,
         inputs=[],
@@ -1700,7 +1700,7 @@ def create_ui():
         if os.path.exists(os.path.join(script_path, "notification.mp3")):
             gr.Audio(interactive=False, value=os.path.join(script_path, "notification.mp3"), elem_id="audio_notification", visible=False)
 
-        footer = shared.html(shared.opts.footer_file)
+        footer = shared.html("footer.html")
         footer = footer.format(versions=versions_html())
         gr.HTML(footer, elem_id="footer")
 
@@ -1834,8 +1834,8 @@ def css_html():
 
         head += stylesheet(cssfile)
 
-    if shared.opts.additional_css != "" and os.path.exists(os.path.join(data_path, shared.opts.additional_css)):
-        head += stylesheet(os.path.join(data_path, shared.opts.additional_css))
+    if os.path.exists(os.path.join(data_path, "user.css")):
+        head += stylesheet(os.path.join(data_path, "user.css"))
 
     return head
 
@@ -1872,12 +1872,8 @@ def versions_html():
     else:
         xformers_version = "N/A"
 
-    if shared.opts.hide_external_links:
-        version_row = f"version: https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/{commit}"
-    else:
-        version_row = f"""version: version: <a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/{commit}">{tag}</a>"""
     return f"""
-{version_row}
+version: <a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/{commit}">{tag}</a>
 &#x2000;•&#x2000;
 python: <span title="{sys.version}">{python_version}</span>
 &#x2000;•&#x2000;
