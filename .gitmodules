@@ -1,3 +1,6 @@
 [submodule "DiffusionDefender"]
 	path = extensions/DiffusionDefender
 	url = https://github.com/racinmat/DiffusionDefender.git
+[submodule "extensions/sd-webui-public-demo-ext"]
+	path = extensions/sd-webui-public-demo-ext
+	url = https://github.com/racinmat/sd-webui-public-demo-ext.git
