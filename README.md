@@ -169,11 +169,19 @@ Licenses for borrowed code can be found in `Settings -> Licenses` screen, and al
 - (You)
 
 # my running notes:
-`git clone https://github.com/racinmat/stable-diffusion-webui.git`
-`git pull --recurse-submodules`
-modify the `webui-user.bat`, point to the correct python
-set the python, it can be the base one, it will use it to run the scripts which make and run the env var
-run the `webui-user.bat`, it will start installing and preparing everything, usually it takes ~25 mins for the first time, in case it was trying to install from pip using company artifactory and then it timeouted, so it shoul be a bit less, but most of the time was installing gfpgan, clip, open_clip etc.
+
+## installing
+- `git clone https://github.com/racinmat/stable-diffusion-webui.git`
+- `cd stable-diffusion-webui`
+- `git submodule update --recursive --init`
+- `git pull --recurse-submodules`
+
+- modify the `webui-user.bat`, point to the correct python
+- set the python, it can be the base one, it will use it to run the scripts which make and run the env var
+- copy the models
+- run the `webui-user.bat`, it will start installing and preparing everything, usually it takes ~25 mins for the first 
+time, in case it was trying to install from pip using company artifactory and then it timeouted, so it shoul be a bit
+less, but most of the time was installing gfpgan, clip, open_clip etc.
 
 I ran into issue:
 ```
@@ -252,7 +260,7 @@ change the path to firefox or other browser to correct one
 
 checklist at place:
 - install python & git
-- clone
+- clone, with submodules
 - copy models
 - edit bat files
 - run everything from bat files
@@ -274,5 +282,56 @@ to add the extensions: just add these urls it in the UI:
 to use the batchscript, go to txt2img tab, script, and there select the script.
 
 branches:
-old master contains many commits and their reverts caused by migrating the code logic to the extension.
+`old_master` contains many commits and their reverts caused by migrating the code logic to the extension.
 master contains just relevant commits with the changes:q
+
+installing xformers:
+https://github.com/facebookresearch/xformers
+```bash
+pip install xformers
+```
+xformers work even with pytorch 2.0.1, confirmed by Automatic1111
+
+use xformers by adding `--force-enable-xformers --xformers` to `COMMANDLINE_ARGS`, it will install everything.
+
+Installing it manually causes problems, because default installation requires Triton by OpenAI, which is only for linux
+
+vram estimater collides with xformers, if you want to use xformers, use
+```json
+{
+  "disabled_extensions": ["a1111-stable-diffusion-webui-vram-estimator"]
+}
+```
+
+notes:
+number of steps is *2 for second order samplers
+
+Prompt and negative prompt can be saved as a style, with `{prompt}` being replaced by the new prompt when 
+the current is used the style. If the `{prompt}` is not present, the `, ` and style prompt is appended.
+
+some parts of prompts can be inserted later in the sampling 
+https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#prompt-editing 
+so then there are multiple schedules, for subsets of steps
+
+prompt notes:
+https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#infinite-prompt-length
+default token size is 75, but when prompt with more tokens are used, they are chunked to sizes of 75 
+(77 with start and end token), every chunk is ran through embedding, and results are concatenated.
+
+dimension of embedding/latent space is 768, so each chunk is embedded to 77*768 vector. The resulting embedding matrix
+is normalized by the ratio of mean without weights (like () or (:2.0)) anf with weights. 
+The embeddings https://github.com/AUTOMATIC1111/stable-diffusion-webui/blob/baf6946e06249c5af9851c60171692c44ef633e0/modules/sd_hijack_clip.py#L259
+are multiplied here. So the total embeddings are schedule steps*(# chunks)*77*768 and then 
+concatenated to tensor (schedule steps)*(77*# chunks)*768.
+
+The random noise image is of size `[`chunk size, 4, (width / 8), (height 8)`]`
+
+emphasis on some words: https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#attentionemphasis
+
+The KDiffusionSampler has model_wrap_cfg which is CFGDenoiser wrapper of CompVisDenoiser 
+(unless some parameters set it differently), which is denoiser k-diffusion from 
+https://github.com/crowsonkb/k-diffusion/blob/master/k_diffusion/external.py#L131.
+Its inner model is LatentDiffusion, which contains UNet.
+
+Inside the UNetModel in forward method, the context is the embedded prompt, x is the noise from the previous step.
+The timesteps is batch of timesteps
