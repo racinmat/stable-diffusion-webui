@@ -3,7 +3,7 @@
 ::set PYTHON=C:\ProgramData\Anaconda3\envs\image_generation\python.exe
 :: it must be python 3.10 to work properly
 ::set PYTHON=C:\Users\Animefest\miniconda3\python.exe
-set PYTHON=C:\Python310\python.exe
+set PYTHON=C:\Python311\python.exe
 set GIT=
 set VENV_DIR=
 :: the hide-ui-dir-config is separate flag, hides server-side

@@ -183,8 +183,12 @@ Licenses for borrowed code can be found in `Settings -> Licenses` screen, and al
 - (You)
 
 # my running notes:
-`git clone https://github.com/racinmat/stable-diffusion-webui.git`
-`git pull --recurse-submodules`
+```shell
+git clone https://github.com/racinmat/stable-diffusion-webui.git
+git checkout animefest
+cd stable-diffusion-webui
+git pull --recurse-submodules
+```
 modify the `webui-user.bat`, point to the correct python
 set the python, it can be the base one, it will use it to run the scripts which make and run the env var
 run the `webui-user.bat`, it will start installing and preparing everything, usually it takes ~25 mins for the first time, in case it was trying to install from pip using company artifactory and then it timeouted, so it shoul be a bit less, but most of the time was installing gfpgan, clip, open_clip etc.
@@ -264,16 +268,36 @@ copy these 3 bat files to desktop:
 change the path in cd there to absolute one.
 change the path to firefox or other browser to correct one
 
-checklist at place:
+### checklist on place:
+
+#### online installation
+is better, you get fresh stuff, but takes more time
 - install python & git
 - clone
+  - ```shell
+    git clone https://github.com/racinmat/stable-diffusion-webui.git
+    git checkout animefest
+    cd stable-diffusion-webui
+    git pull --recurse-submodules
+    ```
+
+#### offline installation
+is faster and more reproducible
+- copy portable python, portable git, and the source code
+
+#### the rest
 - copy models
-- edit bat files
+- edit bat files and set the correct paths
 - run everything from bat files
 - generate anything
 - verify QR code
 - check QR code link over wifi and data from phone
   - if not working, check firewall settings
+
+### The launching files
+- `stable diffusion.bat` - starts the webui
+- `browser.bat` - opens the browser
+- `image viewer.bat` - runs the server for serving images
 
 if you create file `user.css` in root and place css there, it's loaded.
 
@@ -290,3 +314,8 @@ to use the batchscript, go to txt2img tab, script, and there select the script.
 branches:
 old master contains many commits and their reverts caused by migrating the code logic to the extension.
 master contains just relevant commits with the changes:q
+
+`original_master` is the original master branch, not including my additions
+`master` is the branch with my additions, but with `original_master` merged
+`team-instance` is the instance for my team with all features, hosted on hal, where we play with it, and run it in nohup
+`animefest` is the instance for AnimeFest and other cons with the minimalistic UI.
