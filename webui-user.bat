@@ -1,10 +1,13 @@
 @echo off
 
+:: this sets both python and git correctly
+call environment.bat
+
 ::set PYTHON=C:\ProgramData\Anaconda3\envs\image_generation\python.exe
 :: it must be python 3.10 to work properly
 ::set PYTHON=C:\Users\Animefest\miniconda3\python.exe
-set PYTHON=C:\Python311\python.exe
-set GIT=
+::set PYTHON=C:\Python311\python.exe
+::set GIT=
 set VENV_DIR=
 :: the hide-ui-dir-config is separate flag, hides server-side
 set COMMANDLINE_ARGS=--theme dark --ui-settings-file=config-af.json --ui-config-file=ui-config-af.json --hide-ui-dir-config --freeze-settings

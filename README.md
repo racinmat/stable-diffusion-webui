@@ -268,7 +268,7 @@ copy these 3 bat files to desktop:
 change the path in cd there to absolute one.
 change the path to firefox or other browser to correct one
 
-### checklist on place:
+### checklist on the spot:
 
 #### online installation
 is better, you get fresh stuff, but takes more time
@@ -283,7 +283,15 @@ is better, you get fresh stuff, but takes more time
 
 #### offline installation
 is faster and more reproducible
-- copy portable python, portable git, and the source code
+- copy the portable python and portable git. Actually that's what happens in https://github.com/AUTOMATIC1111/stable-diffusion-webui?tab=readme-ov-file#installation-on-windows-1011-with-nvidia-gpus-using-release-package as well
+- copy the source code
+
+actually I downloaded the portable git and python from `sd.webui.zip` in https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases/tag/v1.0.0-pre
+
+the animefest branch portable python and git are used.
+`environment.bat` is copied too, because it contains everything I need to point to the python in `system/python` and git in `system/git`. 
+They are gitignored, because I don't want to push binaries to git.
+
 
 #### the rest
 - copy models
@@ -319,3 +327,15 @@ master contains just relevant commits with the changes:q
 `master` is the branch with my additions, but with `original_master` merged
 `team-instance` is the instance for my team with all features, hosted on hal, where we play with it, and run it in nohup
 `animefest` is the instance for AnimeFest and other cons with the minimalistic UI.
+
+#### updating
+
+check the commits of
+- https://github.com/racinmat/DiffusionDefender
+- https://github.com/racinmat/sd-webui-public-demo-ext
+now I'm on the newest commit
+
+the directories in `repositories` are git repos, and `launch_utils.py` downloads them from git. Check the logs, sometimes there are collisions.
+Look at https://github.com/racinmat/stable-diffusion-webui and https://github.com/racinmat/DiffusionDefender they are not even in the repository.
+In case of a conflict, just delete them.
+
