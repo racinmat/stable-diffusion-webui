@@ -329,5 +329,7 @@
     "deepbooru_sort_alpha": true,
     "deepbooru_use_spaces": true,
     "deepbooru_escape": true,
-    "deepbooru_filter_tags": ""
+    "deepbooru_filter_tags": "",
+    "disabled_extensions": [],
+    "disable_all_extensions": "none"
 }
