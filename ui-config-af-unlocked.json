@@ -1059,5 +1059,10 @@
     "modelmerger/Add merge recipe metadata/value": true,
     "modelmerger/Copy metadata from merged models/visible": true,
     "modelmerger/Copy metadata from merged models/value": true,
-    "modelmerger/Read metadata from selected checkpoints/visible": true
+    "modelmerger/Read metadata from selected checkpoints/visible": true,
+    "txt2img/📂/visible": true,
+    "img2img/Append png info to prompts/visible": true,
+    "img2img/PNG info directory/visible": true,
+    "img2img/📂/visible": true,
+    "extras/📂/visible": true
 }

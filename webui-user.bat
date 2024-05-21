@@ -20,7 +20,7 @@ set VENV_DIR=
 :: same settings for some stuff, but unlocked UI
 ::set COMMANDLINE_ARGS=--theme dark --ui-settings-file=config-af.json --ui-config-file=ui-config-default.json --hide-ui-dir-config --freeze-settings --listen
 ::unlocked version of AF, for local network and allowing to install stuff, very dangerous, do not run publicly
-set COMMANDLINE_ARGS=--theme dark --ui-settings-file=config-af-unlocked.json --ui-config-file=ui-config-af-unlocked.json --hide-ui-dir-config --listen --enable-insecure-extension-access
+set COMMANDLINE_ARGS=--theme dark --ui-settings-file=config-af-unlocked.json --ui-config-file=ui-config-af-unlocked.json --listen --enable-insecure-extension-access
 :: for my laptop
 ::set COMMANDLINE_ARGS=--theme dark --ui-settings-file=config-af.json --hide-ui-dir-config --ui-config-file=ui-config-ntb.json
 :: for the full-config in my fork
