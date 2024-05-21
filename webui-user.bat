@@ -11,7 +11,10 @@ call environment.bat
 set VENV_DIR=
 :: the hide-ui-dir-config is separate flag, hides server-side
 ::set COMMANDLINE_ARGS=--theme dark --ui-settings-file=config-af.json --ui-config-file=ui-config-af.json --hide-ui-dir-config --freeze-settings
-set COMMANDLINE_ARGS=--theme dark --hide-ui-dir-config --freeze-settings
+:: for public AF setup, but without frozen config, for setting things up
+set COMMANDLINE_ARGS=--theme dark --ui-settings-file=config-af.json --ui-config-file=ui-config-af.json --hide-ui-dir-config --freeze-settings
+::set COMMANDLINE_ARGS=--theme dark --hide-ui-dir-config
+::set COMMANDLINE_ARGS=--theme dark --hide-ui-dir-config --freeze-settings
 :: share to local network by adding --share --listen
 ::set COMMANDLINE_ARGS=--theme dark --ui-settings-file=config-af.json --ui-config-file=ui-config-af.json --hide-ui-dir-config --freeze-settings --share --listen
 :: same settings for some stuff, but unlocked UI
