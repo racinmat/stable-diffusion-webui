@@ -17,9 +17,11 @@ fi
 
 # Read variables from webui-user.sh
 # shellcheck source=/dev/null
-if [[ -f "$SCRIPT_DIR"/webui-user.sh ]]
+#if [[ -f "$SCRIPT_DIR"/webui-user.sh ]]
+if [[ -f "$SCRIPT_DIR"/webui-user-tlab.sh ]]
 then
-    source "$SCRIPT_DIR"/webui-user.sh
+#    source "$SCRIPT_DIR"/webui-user.sh
+    source "$SCRIPT_DIR"/webui-user-tlab.sh
 fi
 
 # If $venv_dir is "-", then disable venv support
