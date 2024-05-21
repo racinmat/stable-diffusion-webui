@@ -328,6 +328,9 @@ master contains just relevant commits with the changes:q
 `team-instance` is the instance for my team with all features, hosted on hal, where we play with it, and run it in nohup
 `animefest` is the instance for AnimeFest and other cons with the minimalistic UI.
 
+because of some git shenanigans, I renamed `master` to `master-old`, `team-instance` to `team-instance-old` and `animefest` to `animefest-old`
+and made new ones by just applying the diffs to the `original_master`
+
 #### updating
 
 check the commits of
@@ -338,4 +341,3 @@ now I'm on the newest commit
 the directories in `repositories` are git repos, and `launch_utils.py` downloads them from git. Check the logs, sometimes there are collisions.
 Look at https://github.com/racinmat/stable-diffusion-webui and https://github.com/racinmat/DiffusionDefender they are not even in the repository.
 In case of a conflict, just delete them.
-
