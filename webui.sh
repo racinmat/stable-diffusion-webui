@@ -17,9 +17,11 @@ fi
 
 # Read variables from webui-user.sh
 # shellcheck source=/dev/null
-if [[ -f "$SCRIPT_DIR"/webui-user.sh ]]
+#if [[ -f "$SCRIPT_DIR"/webui-user.sh ]]
+if [[ -f "$SCRIPT_DIR"/webui-user-tlab.sh ]]
 then
-    source "$SCRIPT_DIR"/webui-user.sh
+#    source "$SCRIPT_DIR"/webui-user.sh
+    source "$SCRIPT_DIR"/webui-user-tlab.sh
 fi
 
 # If $venv_dir is "-", then disable venv support
@@ -209,6 +211,7 @@ then
     cd "${install_dir}"/"${clone_dir}"/ || { printf "\e[1m\e[31mERROR: Can't cd to %s/%s/, aborting...\e[0m" "${install_dir}" "${clone_dir}"; exit 1; }
     if [[ ! -d "${venv_dir}" ]]
     then
+        echo "creating a new venv in ${venv_dir}"
         "${python_cmd}" -m venv "${venv_dir}"
         first_launch=1
     fi
@@ -216,6 +219,7 @@ then
     if [[ -f "${venv_dir}"/bin/activate ]]
     then
         source "${venv_dir}"/bin/activate
+        echo "activating ${venv_dir}/bin/activate"
     else
         printf "\n%s\n" "${delimiter}"
         printf "\e[1m\e[31mERROR: Cannot activate python venv, aborting...\e[0m"

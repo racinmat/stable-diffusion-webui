@@ -341,3 +341,39 @@ now I'm on the newest commit
 the directories in `repositories` are git repos, and `launch_utils.py` downloads them from git. Check the logs, sometimes there are collisions.
 Look at https://github.com/racinmat/stable-diffusion-webui and https://github.com/racinmat/DiffusionDefender they are not even in the repository.
 In case of a conflict, just delete them.
+
+### installation for experimentation server
+
+uploaded all source code to `/home/matej.racinsky/stable-diffusion-webui`
+including the .git so I could push and diff
+run it as
+```shell
+cd /home/matej.racinsky/stable-diffusion-webui
+./webui.sh
+nohup ./webui.sh > webui-af.log 2>&1 &
+cat webui-af.log
+find /home/matej.racinsky/stable-diffusion-webui -type f -not -path '*/.git/*' -print0 | xargs -0 dos2unix --
+
+```
+
+downloading the model
+```shell
+huggingface-cli download SweetLuna/Kenshi "KENSHI 01/KENSHI01_Pruned_f16.safetensors" --local-dir /home/matej.racinsky/stable-diffusion-webui/models/Stable-diffusion --local-dir-use-symlinks=False
+mv "/home/matej.racinsky/stable-diffusion-webui/models/Stable-diffusion/KENSHI 01/KENSHI01_Pruned_f16.safetensors" /home/matej.racinsky/stable-diffusion-webui/models/Stable-diffusion/KENSHI01_Pruned_f16.safetensors
+```
+
+installing dos2unix:
+https://www.linuxfromscratch.org/blfs/view/svn/general/dos2unix.html
+```shell
+wget https://downloads.sourceforge.net/dos2unix/dos2unix-7.5.2.tar.gz
+tar -xzf dos2unix-7.5.2.tar.gz
+cd dos2unix-7.5.2
+make
+make check
+sed -i 's|prefix\s*=\s*/usr|prefix = /home/matej.racinsky|' "Makefile"
+make install PREFIX=~/bin
+make clean
+cd ..
+rm -rf dos2unix-7.5.2.tar.gz dos2unix-7.5.2
+
+```
